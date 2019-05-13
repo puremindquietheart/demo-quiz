@@ -56,6 +56,13 @@ class Administrator extends CI_Controller {
 		echo $get_users;
 	}
 
+	public function getUserLogs() {
+		$get_user_logs = $this->DashboardModel->get_user_logs();
+		echo $get_user_logs;
+	}
+
+	// main functions
+
 	public function newUser() {
 		$data = array(
 			'user_type' => $this->input->post('selected_user_type'),
@@ -75,6 +82,26 @@ class Administrator extends CI_Controller {
 		}
 	}
 
+	public function updateUser() {
+		$data = array(
+			'user_id' => $this->input->post('edit_user_id'),
+			'user_type' => $this->input->post('edit_selected_user_type'),
+			'user_gender' => $this->input->post('edit_select_user_gender'),
+			'user_name' => $this->input->post('edit_user_name'),
+			'user_email' => $this->input->post('edit_user_email'),
+			'user_password' => $this->input->post('edit_user_password'),
+			'user_active' => 1
+		);
+
+		$update_user_data = $this->DashboardModel->update_user('users', $data);
+
+		if ($update_user_data) {
+			echo json_encode($arrayName = array('success' => true, 'message' => 'User Details was Updated Successfully!'));
+		} else {
+			echo json_encode($arrayName = array('success' => false));
+		}
+	}
+
 	public function userStatus() {
 		$data = array(
 			'user_id' => $this->input->post('user_status_id')
@@ -87,5 +114,15 @@ class Administrator extends CI_Controller {
 		} else {
 			echo json_encode($arrayName = array('activated' => true, 'message' => 'User was Activated Successfully!'));
 		}
+	}
+
+	public function getUserData() {
+		$data = array(
+			'user_id' => $this->input->post('edit_user_id')
+		);
+
+		$fetched_user_data = $this->DashboardModel->get_user_data('users', $data);
+
+		echo $fetched_user_data;
 	}
 }

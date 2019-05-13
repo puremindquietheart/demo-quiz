@@ -59,8 +59,33 @@ $(function(){
 
                 $('#edit_user_modal').modal("show");
 
+                $('#edit_select_user_type').select2();
+
+                $('#edit_select_user_gender').select2();
+
                 const edit_user_id = $(this).data('edit_user_id');
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost/Quiz/index.php/Dashboard/Administrator/getUserData',
+                    data:
+                    {
+                        edit_user_id:edit_user_id
+                    },
+                    dataType: 'json',
+                    success: (result) => {
+                        $('#edit_user_id').val(result[0].user_id);
+                        $('#edit_user_name').val(result[0].user_name);
+                        $('#edit_user_email').val(result[0].user_email);
+                        $('#edit_user_password').val(result[0].user_password);
+                        $('#edit_selected_user_type').val(result[0].user_type);
+                        $('#edit_selected_user_gender').val(result[0].user_gender);
+                        $('#edit_select_user_type').val(result[0].user_type);
+                        $('#edit_select_user_gender').val(result[0].user_gender);
+                    }
+                });
             });
+
             $(user_status).on('click', function(){
                 
                 const user_status_id = $(this).data('user_id');
@@ -138,6 +163,8 @@ $(function(){
         $('#select_user_gender').val(0);
     });
 
+    // new user
+
     $('#save_new_user_btn').on('click', (e) => {
         e.preventDefault();
 
@@ -210,7 +237,7 @@ $(function(){
                     } else if (result.success == false) {
                         swal({
                             title: 'Exist!',
-                            text: 'User email already exist!',
+                            text: 'User Email Already Exist!',
                             type: 'warning'
                         }).then(() => {
                             $('#input_new_user_email').val('');
@@ -220,6 +247,103 @@ $(function(){
             });
         }
 
+    });
+
+    // update user
+
+    $('#confirm_user_update_btn').on('click', (e) => {
+        e.preventDefault();
+
+        const edit_user_id = $('#edit_user_id').val();
+        const edit_user_name = $('#edit_user_name').val();
+        const edit_user_email = $('#edit_user_email').val();
+        const edit_user_password = $('#edit_user_password').val();
+        const edit_selected_user_type = $('#edit_selected_user_type').val();
+        const edit_select_user_gender = $('#edit_select_user_gender').val();
+
+        if (edit_user_name == "" || edit_user_name == "0") {
+            swal({
+                title: 'Required!',
+                text: 'User name input is empty!',
+                type: 'warning'
+            }).catch(swal.noop);
+        } else if (edit_user_email == "" || edit_user_email == "0") {
+            swal({
+                title: 'Required!',
+                text: 'User email input is empty!',
+                type: 'warning'
+            }).catch(swal.noop);
+        } else if (edit_user_password == "" || edit_user_password == "0") {
+            swal({
+                title: 'Required!',
+                text: 'User password input is empty!',
+                type: 'warning'
+            }).catch(swal.noop);
+        } else if (edit_selected_user_type == "" || edit_selected_user_type == "0") {
+            swal({
+                title: 'Required!',
+                text: 'Select user type is empty!',
+                type: 'warning'
+            }).catch(swal.noop);
+        } else if (edit_select_user_gender == "" || edit_select_user_gender == "0") {
+            swal({
+                title: 'Required!',
+                text: 'Select user gender is empty!',
+                type: 'warning'
+            }).catch(swal.noop);
+        } else if (!isEmail(edit_user_email)) {
+            swal({
+                title: 'Invalid!',
+                text: 'User email is not in valid format!',
+                type: 'error'
+            }).catch(swal.noop);
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost/Quiz/index.php/Dashboard/Administrator/updateUser',
+                data:
+                {   
+                    // id
+                    edit_user_id:edit_user_id,
+                    // new data
+                    edit_user_name:edit_user_name,
+                    edit_user_email:edit_user_email,
+                    edit_user_password:edit_user_password,
+                    edit_selected_user_type:edit_selected_user_type,
+                    edit_select_user_gender:edit_select_user_gender
+                },
+                dataType: 'json',
+                success: (result) => {
+                    if (result.success == true) {
+                        $('#edit_user_modal').modal('hide');
+                        swal({
+                            title: 'Success!',
+                            text: 'User Details was Updated!',
+                            type: 'success'
+                        }).then(() => {
+                            $('#message_success').css('display', 'block');
+                            $('#success_text').text(result.message);
+
+                            setTimeout(() => {
+                                $('#message_success').fadeOut();
+                            }, 3500);
+
+                            user_tbl.ajax.reload();
+                        });
+
+                        
+                    } else if (result.success == false) {
+                        swal({
+                            title: 'Exist!',
+                            text: 'User Email Already Exist!',
+                            type: 'warning'
+                        }).then(() => {
+                            $('#edit_user_email').val('');
+                        });
+                    }
+                }
+            });
+        }
     });
 
     function isEmail(email) {

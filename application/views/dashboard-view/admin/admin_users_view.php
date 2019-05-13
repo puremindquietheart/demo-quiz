@@ -50,12 +50,12 @@
                                 </table>
                             </div>
                         </div>
-                    </div> <!-- end row -->
+                    </div> 
                 </div>
             </div>
 
             <footer class="footer">
-            2019 © Exam Quiz
+                2019 © Exam Quiz
             </footer>
 
         </div>
