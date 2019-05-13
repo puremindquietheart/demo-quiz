@@ -37,9 +37,9 @@ $(function(){
             { data: 'user_id', data: 'user_active',
                 render: function (data, type, row, meta) {
                     if (row.user_active == 1) {
-                        return '<button type="button" class="btn btn-danger waves-effect deactivate-user waves-light" data-user_id='+row.user_id+'><i class="mdi mdi-account-off m-r-5"></i> Deactivate</button>'
+                        return '<button type="button" class="btn btn-danger waves-effect user-status waves-light" data-user_id='+row.user_id+'><i class="mdi mdi-account-off m-r-5"></i> Deactivate</button>'
                     } else {
-                        return '<button type="button" class="btn btn-success waves-effect activate-user waves-light" data-user_id='+row.user_id+'><i class="mdi mdi-account-check m-r-5"></i> Activate</button>'
+                        return '<button type="button" class="btn btn-success waves-effect user-status waves-light" data-user_id='+row.user_id+'><i class="mdi mdi-account-check m-r-5"></i> Activate</button>'
                     }
                     
                 }
@@ -52,8 +52,7 @@ $(function(){
             },
         ],
         createdRow: function (row, data, dataIndex) {
-            const deactivate_user = $(row).find('.deactivate-user');
-            const activate_user = $(row).find('.activate-user');
+            const user_status = $(row).find('.user-status');
             const edit_user_details = $(row).find('.edit-user');
             // GET CONTAINER NUMBER
             $(edit_user_details).on('click', function(){
@@ -62,66 +61,69 @@ $(function(){
 
                 const edit_user_id = $(this).data('edit_user_id');
             });
+            $(user_status).on('click', function(){
+                
+                const user_status_id = $(this).data('user_id');
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost/Quiz/index.php/Dashboard/Administrator/userStatus',
+                    data:
+                    {
+                        user_status_id:user_status_id
+                    },
+                    dataType: 'json',
+                    success: (result) => {
+                        if (result.activated == false) {
+                            swal({
+                                title: 'Deactivated!',
+                                text: 'User was deactivated.',
+                                type: 'warning'
+                            }).then(() => {
+                                $('#message_warning').css('display', 'block');
+                                $('#warning_text').text(result.message);
+                                
+                                setTimeout(() => {
+                                    $('#message_warning').fadeOut();
+                                }, 3500);
+    
+                                user_tbl.ajax.reload();
+                            }).catch(swal.noop);
+                        } else if (result.activated == true) {
+                            swal({
+                                title: 'Activated!',
+                                text: 'User was activated.',
+                                type: 'success'
+                            }).then(() => {
+                                $('#message_success').css('display', 'block');
+                                $('#success_text').text(result.message);
+                                
+                                setTimeout(() => {
+                                    $('#message_success').fadeOut();
+                                }, 3500);
+    
+                                user_tbl.ajax.reload();
+                            }).catch(swal.noop);
+                        }
+                    }
+                });
+            });
         }
     });
 
     $('#new_user').on('click', () => {
 
         $('#add_user_modal').modal('show');
-
-        $('#save_new_user_btn').prop('disabled', true);
-        $('#input_new_user_email').prop('disabled', true);
-        $('#select_user_type').prop('disabled', true);
-        $('#select_user_gender').prop('disabled', true);
-
-        let select_user_type = $('#selected_user_type').val();
-        let select_user_gender = $('#selected_user_gender').val();
-
-        if (select_user_type == "") {
-            console.log("HAHA");
-        }
-        
-
-        $('#input_new_user_name').on('input', function() {
-            let check_input_name = this.value;
-            if (check_input_name == 0 || check_input_name == "") {
-                $('#input_new_user_email').prop('disabled', true);
-                $('#save_new_user_btn').prop('disabled', true);
-            } else {
-                $('#input_new_user_email').prop('disabled', false);
-                console.log(select_user_type);
-            }
-        });
-
-        $('#input_new_user_email').on('input', function(){
-            let check_email_input = this.value;
-
-            if (isEmail(check_email_input)) {
-                $('#select_user_type').prop('disabled', false);
-
-                if (select_user_type == "" && select_user_gender == "") {
-                    $('#save_new_user_btn').prop('disabled', true);
-                } else {
-                    $('#save_new_user_btn').prop('disabled', false);
-                }
-            } else { 
-                $('#select_user_type').prop('disabled', true);
-                $('#save_new_user_btn').prop('disabled', true);
-            }
-        });
         
         $('#select_user_type').select2();
         $('#select_user_type').on('change', () => {
             $('#selected_user_type').val($('#select_user_type option:selected').val());
-            $('#save_new_user_btn').prop('disabled', true);
-            $('#select_user_gender').prop('disabled', false);
             
         });
         
         $('#select_user_gender').select2();
         $('#select_user_gender').on('change', () => {
             $('#selected_user_gender').val($('#select_user_gender').val());
-            $('#save_new_user_btn').prop('disabled', false);
         });
     });
 
@@ -144,25 +146,79 @@ $(function(){
         const selected_user_type = $('#selected_user_type').val();
         const selected_user_gender = $('#selected_user_gender').val();
 
-        $.ajax({
-            type: 'POST',
-            url: 'http://localhost/Quiz/index.php/Dashboard/Administrator/newUser',
-            data:
-            {
-                input_new_user_name:input_new_user_name,
-                input_new_user_email:input_new_user_email,
-                selected_user_type:selected_user_type,
-                selected_user_gender:selected_user_gender
-            },
-            dataType: 'json',
-            success: (result) => {
-                console.log(result);
-                console.log(result.success);
-                // if (result.) {
+        if (input_new_user_name == "" || input_new_user_name == "0") {
+            swal({
+                title: 'Required!',
+                text: 'User name input is empty!',
+                type: 'warning'
+            }).catch(swal.noop);
+        } else if (input_new_user_email == "" || input_new_user_email == "0" ) {
+            swal({
+                title: 'Required!',
+                text: 'User email input is empty!',
+                type: 'warning'
+            }).catch(swal.noop);
+        } else if (selected_user_type == "" || selected_user_type == "0") {
+            swal({
+                title: 'Required!',
+                text: 'Select user type is empty!',
+                type: 'warning'
+            }).catch(swal.noop);
+        } else if (selected_user_gender == "" || selected_user_gender == "0") {
+            swal({
+                title: 'Required!',
+                text: 'Select user gender is empty!',
+                type: 'warning'
+            }).catch(swal.noop);
+        } else if (!isEmail(input_new_user_email)) {
+            swal({
+                title: 'Invalid!',
+                text: 'User email is not in valid format!',
+                type: 'error'
+            }).catch(swal.noop);
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost/Quiz/index.php/Dashboard/Administrator/newUser',
+                data:
+                {
+                    input_new_user_name:input_new_user_name,
+                    input_new_user_email:input_new_user_email,
+                    selected_user_type:selected_user_type,
+                    selected_user_gender:selected_user_gender
+                },
+                dataType: 'json',
+                success: (result) => {
+                    if (result.success == true) {
+                        $('#add_user_modal').modal('hide');
+                        swal({
+                            title: 'Success!',
+                            text: 'New user was created!',
+                            type: 'success'
+                        }).then(() => {
+                            $('#message_success').css('display', 'block');
+                            $('#success_text').text(result.message);
 
-                // }
-            }
-        });
+                            setTimeout(() => {
+                                $('#message_success').fadeOut();
+                            }, 3500);
+
+                            user_tbl.ajax.reload();
+                        });
+
+                        
+                    } else if (result.success == false) {
+                        swal({
+                            title: 'Exist!',
+                            text: 'User email already exist!',
+                            type: 'warning'
+                        }).then(() => {
+                            $('#input_new_user_email').val('');
+                        });
+                    }
+                }
+            });
+        }
 
     });
 

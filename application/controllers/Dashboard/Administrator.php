@@ -74,4 +74,18 @@ class Administrator extends CI_Controller {
 			echo json_encode($arrayName = array('success' => false));
 		}
 	}
+
+	public function userStatus() {
+		$data = array(
+			'user_id' => $this->input->post('user_status_id')
+		);
+
+		$user_status = $this->DashboardModel->manage_user_status('users', $data);
+
+		if ($user_status) {
+			echo json_encode($arrayName = array('activated' => false, 'message' => 'User was Deactivated Successfully!'));
+		} else {
+			echo json_encode($arrayName = array('activated' => true, 'message' => 'User was Activated Successfully!'));
+		}
+	}
 }

@@ -55,9 +55,31 @@ class Dashboard_Model extends CI_Model {
     if ($result->num_rows() == 1) {
       return false;
     } else {
-      // $this->db->insert($table, $data);
+      $this->db->insert($table, $data);
 
       return true;
+    }
+  }
+
+  public function manage_user_status($table, $data) {
+
+    $this->db->select('user_active');
+    $this->db->from($table);
+    $this->db->where($data);
+    $result = $this->db->get()->row()->user_active;
+
+    if ($result == 1) {
+      $this->db->set('user_active', '0');
+      $this->db->where($data);
+      $this->db->update($table);
+
+      return true;
+    } else {
+      $this->db->set('user_active', '1');
+      $this->db->where($data);
+      $this->db->update($table);
+
+      return false;
     }
   }
 }

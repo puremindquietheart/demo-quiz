@@ -34,7 +34,8 @@
                         <div class="col-md-12">
                             <div class="card-box table-responsive">
                                 <button type="button" id="new_user" class="btn btn-icon waves-effect waves-light btn-success"><i class="mdi mdi-account-plus"></i> <span>New User</span> </button>
-                                <hr>                                
+                                <hr>        
+                                <?php include 'layouts/message.php'; ?>                        
                                 <h4 class="m-t-0 header-title">List of Users</h4>
                                 <table id="user_list_tbl" class="table table-bordered table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>

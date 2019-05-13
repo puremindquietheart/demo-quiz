@@ -26,7 +26,7 @@
                     <div class="form-group m-b-25">
                         <div class="col-12">
                             <label for="select_user_type"> Select User Type </label>
-                            <input type="text" id="selected_user_type">
+                            <input type="hidden" id="selected_user_type">
                             <select class="form-control select2" id="select_user_type">
                                 <option value='0' selected disabled readonly>Select User Type</option>
                                 <option value='1'>Admin</option>
@@ -38,7 +38,7 @@
                     <div class="form-group m-b-25">
                         <div class="col-12">
                             <label for="select_user_gender"> Select User Gender </label>
-                            <input type="text" id="selected_user_gender">
+                            <input type="hidden" id="selected_user_gender">
                             <select class="form-control select2" id="select_user_gender">
                                 <option value='0' selected disabled readonly>Select User Gender</option>
                                 <option value='1'>Male</option>
