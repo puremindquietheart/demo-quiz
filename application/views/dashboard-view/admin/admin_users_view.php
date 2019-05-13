@@ -33,7 +33,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-box table-responsive">
-                                <button type="button" id="new_container" class="btn btn-icon waves-effect waves-light btn-success"><i class="mdi mdi-account-plus"></i> <span>New User</span> </button>
+                                <button type="button" id="new_user" class="btn btn-icon waves-effect waves-light btn-success"><i class="mdi mdi-account-plus"></i> <span>New User</span> </button>
                                 <hr>                                
                                 <h4 class="m-t-0 header-title">List of Users</h4>
                                 <table id="user_list_tbl" class="table table-bordered table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -59,7 +59,7 @@
 
         </div>
     </div>
-
+    <?php include 'admin-modal/users-modal.php'; ?>
     <?php include 'layouts/scripts.php'; ?>
     <script src="<?php echo asset_url()?>js/view-js/user-js/manage-users.js"></script>
   </body>

@@ -6,7 +6,6 @@ class Administrator extends CI_Controller {
 		parent::__construct();
 		// Load dashboard model
 		$this->load->model('DashboardModel/Dashboard_Model', 'DashboardModel');
-		$this->load->model('LoginModel/Login_Model', 'LoginModel');
 		// Load session library
 		$this->load->library('session');
 
@@ -16,10 +15,11 @@ class Administrator extends CI_Controller {
 
 			$this->session->sess_destroy();
 
-            $this->load->view('login-view/view_login', $data);
+			echo $this->load->view('login-view/view_login', $data, true);
+			
+			exit();
 		}
 	}
-	
 	// load views
 
 	public function index() {
@@ -53,6 +53,25 @@ class Administrator extends CI_Controller {
 
 	public function getUsers() {
 		$get_users = $this->DashboardModel->get_users_data('users');
-		echo json_encode($get_users);
+		echo $get_users;
+	}
+
+	public function newUser() {
+		$data = array(
+			'user_type' => $this->input->post('selected_user_type'),
+			'user_gender' => $this->input->post('selected_user_gender'),
+			'user_name' => $this->input->post('input_new_user_name'),
+			'user_email' => $this->input->post('input_new_user_email'),
+			'user_password' => 'defaultpassword123',
+			'user_active' => 1
+		);
+
+		$save_new_user = $this->DashboardModel->new_user('users', $data);
+
+		if ($save_new_user) {
+			echo json_encode($arrayName = array('success' => true, 'message' => 'New User was Created Successfully!'));
+		} else {
+			echo json_encode($arrayName = array('success' => false));
+		}
 	}
 }

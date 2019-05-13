@@ -34,8 +34,30 @@ class Dashboard_Model extends CI_Model {
 
     $this->db->from($table);
 
+    $this->db->order_by("user_id", "desc");
+
     $result = $this->db->get();
 
-    return $result->result();
+    return json_encode($result->result());
+  }
+
+  public function new_user($table, $data) {
+    // print_r($data['user_type']);
+
+    $this->db->select('*');
+
+    $this->db->from($table);
+    
+    $this->db->where('user_email',$data['user_email']); 
+
+    $result = $this->db->get();
+
+    if ($result->num_rows() == 1) {
+      return false;
+    } else {
+      // $this->db->insert($table, $data);
+
+      return true;
+    }
   }
 }

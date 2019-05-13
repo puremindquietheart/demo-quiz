@@ -14,9 +14,9 @@ class Login extends CI_Controller {
 	public function index()
 	{
         if ($this->session->userdata('user_type') == 1) {
-            redirect('index.php/Dashboard/Administrator/index');
+            redirect('index.php/Dashboard/Administrator');
         } else if ($this->session->userdata('user_type') == 2) {
-            redirect('index.php/Dashboard/Examinee/index');
+            redirect('index.php/Dashboard/Examinee');
         } else {
             $this->load->view('login-view/view_login');
         }
@@ -45,11 +45,11 @@ class Login extends CI_Controller {
                 $this->session->set_userdata('user_type', $check_user_existence[0]->user_type);
                 $this->session->set_userdata('user_gender', $check_user_existence[0]->user_gender);
             
-            if ($this->session->userdata('user_type') == 1) {
-                redirect('index.php/Dashboard/Administrator/index');
-            } else {
-                redirect('index.php/Dashboard/Examinee/index');
-            }
+                if ($this->session->userdata('user_type') == 1) {
+                    redirect('index.php/Dashboard/Administrator');
+                } else {
+                    redirect('index.php/Dashboard/Examinee');
+                }
             }
             
         } else {

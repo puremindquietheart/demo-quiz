@@ -19,7 +19,9 @@ class Examinee extends CI_Controller {
 
 			$this->session->sess_destroy();
 
-            $this->load->view('login-view/view_login', $data);
+            echo $this->load->view('login-view/view_login', $data, true);
+
+            exit();
 		}
 	}
 
