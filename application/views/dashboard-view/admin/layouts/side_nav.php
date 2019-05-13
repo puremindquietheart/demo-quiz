@@ -57,6 +57,12 @@
             </li>
 
             <li>
+                <a href="<?php echo base_url()?>index.php/Dashboard/Administrator/user_exams">
+                    <i class="mdi mdi-approval"></i> <span> User Exams </span>
+                </a>
+            </li>
+
+            <li>
                 <a href="<?php echo base_url()?>index.php/Dashboard/Administrator/logs">
                     <i class="fa fa-user-secret"></i> <span> User Logs </span>
                 </a>

@@ -26,7 +26,7 @@ $(function(){
             { data: 'user_name' },
             { data: 'user_type',  
                 render: function (data, type, row, meta){
-                    if (data === 1) {
+                    if (data == 1) {
                         return 'Admin';
                     } else {
                         return 'Member';
@@ -41,7 +41,6 @@ $(function(){
                     } else {
                         return '<button type="button" class="btn btn-success waves-effect user-status waves-light" data-user_id='+row.user_id+'><i class="mdi mdi-account-check m-r-5"></i> Activate</button>'
                     }
-                    
                 }
             },
             { data: 'user_id',  
@@ -64,7 +63,7 @@ $(function(){
                 $('#edit_select_user_gender').select2();
 
                 const edit_user_id = $(this).data('edit_user_id');
-
+                
                 $.ajax({
                     type: 'POST',
                     url: 'http://localhost/Quiz/index.php/Dashboard/Administrator/getUserData',
@@ -73,15 +72,19 @@ $(function(){
                         edit_user_id:edit_user_id
                     },
                     dataType: 'json',
-                    success: (result) => {
-                        $('#edit_user_id').val(result[0].user_id);
-                        $('#edit_user_name').val(result[0].user_name);
-                        $('#edit_user_email').val(result[0].user_email);
-                        $('#edit_user_password').val(result[0].user_password);
-                        $('#edit_selected_user_type').val(result[0].user_type);
-                        $('#edit_selected_user_gender').val(result[0].user_gender);
-                        $('#edit_select_user_type').val(result[0].user_type);
-                        $('#edit_select_user_gender').val(result[0].user_gender);
+                    success: function(result) {
+                        $.each(result, function(i, v) {
+                            // console.log(v);
+                            // console.log(v.user_active);
+                            $('#edit_user_id').val(v.user_id);
+                            $('#edit_user_name').val(v.user_name);
+                            $('#edit_user_email').val(v.user_email);
+                            $('#edit_user_password').val(v.user_password);
+                            $('#edit_selected_user_type').val(v.user_type);
+                            $('#edit_selected_user_gender').val(v.user_gender);
+                            $('#edit_select_user_type').val(v.user_type).trigger('change');
+                            $('#edit_select_user_gender').val(v.user_gender).trigger('change');
+                        });
                     }
                 });
             });

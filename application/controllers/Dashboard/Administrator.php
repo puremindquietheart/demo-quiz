@@ -34,6 +34,10 @@ class Administrator extends CI_Controller {
 		$this->load->view('dashboard-view/admin/admin_exams_view');
 	}
 
+	public function user_exams() {
+		$this->load->view('dashboard-view/admin/admin_user_exams');
+	}
+
 	public function logs() {
 		$this->load->view('dashboard-view/admin/admin_logs_view');
 	}
@@ -56,12 +60,28 @@ class Administrator extends CI_Controller {
 		echo $get_users;
 	}
 
+	public function getExams() {
+		$get_exams = $this->DashboardModel->get_exams_data();
+		echo $get_exams;
+	}
+
 	public function getUserLogs() {
 		$get_user_logs = $this->DashboardModel->get_user_logs();
 		echo $get_user_logs;
 	}
 
-	// main functions
+	public function getUserExams() {
+		$get_user_exams = $this->DashboardModel->get_user_exams();
+		echo $get_user_exams;
+	}
+
+	public function getExaminee() {
+		$get_examinee = $this->DashboardModel->get_examinee();
+		echo $get_examinee;
+	}
+	
+
+	// main functions for users
 
 	public function newUser() {
 		$data = array(
@@ -124,5 +144,82 @@ class Administrator extends CI_Controller {
 		$fetched_user_data = $this->DashboardModel->get_user_data('users', $data);
 
 		echo $fetched_user_data;
+	}
+
+	// main functions for exams
+
+	public function newExam() {
+		$data = array(
+			'exam_type' => $this->input->post('selected_exam_type'),
+			'exam_name' => $this->input->post('input_new_exam'),
+			'date_added' => Date("Y-m-d H:i:s")
+		);
+		
+		$save_new_exam = $this->DashboardModel->new_exam('exams', $data);
+
+		if ($save_new_exam) {
+			echo json_encode($arrayName = array('success' => true, 'message' => 'New Exam was Created Successfully!'));
+		} else {
+			echo json_encode($arrayName = array('success' => false));
+		}
+	}
+
+	public function getExamDetails() {
+		$data = array(
+			'exam_id' => $this->input->post('edit_exam_id')
+		);
+
+		$fetched_exam_data = $this->DashboardModel->get_exam_data('exams', $data);
+
+		echo $fetched_exam_data;
+	}
+
+	public function updateExam() {
+		$data = array(
+			'exam_id' => $this->input->post('edit_exam_id'),
+			'exam_type' => $this->input->post('edit_selected_exam_type'),
+			'exam_name' => $this->input->post('edit_exam_name'),
+			'date_updated' => Date("Y-m-d H:i:s")
+		);
+		
+		$update_exam_details = $this->DashboardModel->update_exam('exams', $data);
+
+		if ($update_exam_details) {
+			echo json_encode($arrayName = array('success' => true, 'message' => 'Exam Details was Updated Successfully!'));
+		} else {
+			echo json_encode($arrayName = array('success' => false));
+		}
+	}
+
+	public function newQuestion() {
+		$data = array(
+			'exam_id' => $this->input->post('question_exam_id'),
+			'question_description' => $this->input->post('input_question'),
+			'answer_a' => $this->input->post('input_answer_a'),
+			'answer_b' => $this->input->post('input_answer_b'),
+			'answer_c' => $this->input->post('input_answer_c'),
+			'answer_d' => $this->input->post('input_answer_d'),
+			'correct_answer' => $this->input->post('correct_answer')
+		);
+		
+		$save_new_question = $this->DashboardModel->new_question('exam_questions', $data);
+
+		if ($save_new_question) {
+			echo json_encode($arrayName = array('success' => true, 'message' => 'New Exam was Added Successfully!'));
+		} else {
+			echo json_encode($arrayName = array('success' => false));
+		}
+	}
+
+	public function assignExam() { 
+		$data = array(
+			'user_id' => $this->input->post('selected_examinee_id')
+		);
+
+		$assigned_user_exam = $this->DashboardModel->assign_user_exam('users', $data);
+
+		if ($assigned_user_exam) {
+			echo json_encode($arrayName = array('success' => true, 'message' => 'Exam was Assigned to User Successfully!'));
+		}
 	}
 }

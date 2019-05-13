@@ -12,14 +12,14 @@
                     <div class="form-group m-b-25">
                         <div class="col-12">
                             <label for="input_new_user_name"> User Name </label>
-                            <input type="text" class="form-control" id="input_new_user_name" placeholder="Input User Name">
+                            <input type="text" class="form-control" id="input_new_user_name" placeholder="Input User Name" autocomplete="off">
                         </div>
                     </div>
 
                     <div class="form-group m-b-25">
                         <div class="col-12">
                             <label for="input_new_user_email"> User Email </label>
-                            <input type="email" class="form-control" id="input_new_user_email" placeholder="Input User Email">
+                            <input type="email" class="form-control" id="input_new_user_email" placeholder="Input User Email" autocomplete="off">
                         </div>
                     </div>
 
@@ -75,21 +75,21 @@
                         <div class="col-12">
                             <label for="edit_user_name"> User Name </label>
                             <input type="hidden" id="edit_user_id">
-                            <input type="text" class="form-control" id="edit_user_name" placeholder="Input User Name">
+                            <input type="text" class="form-control" id="edit_user_name" placeholder="Input User Name" autocomplete="off">
                         </div>
                     </div>
 
                     <div class="form-group m-b-25">
                         <div class="col-12">
                             <label for="edit_user_email"> User Email </label>
-                            <input type="email" class="form-control" id="edit_user_email" placeholder="Input User Email">
+                            <input type="email" class="form-control" id="edit_user_email" placeholder="Input User Email" autocomplete="off">
                         </div>
                     </div>
 
                     <div class="form-group m-b-25">
                         <div class="col-12">
                             <label for="edit_user_password"> User Password </label>
-                            <input type="password" class="form-control" id="edit_user_password" placeholder="Input User Email">
+                            <input type="password" class="form-control" id="edit_user_password" placeholder="Input User Password">
                         </div>
                     </div>
 
