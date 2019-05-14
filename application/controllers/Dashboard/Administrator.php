@@ -206,14 +206,13 @@ class Administrator extends CI_Controller {
 
 		if ($save_new_question) {
 			echo json_encode($arrayName = array('success' => true, 'message' => 'New Exam was Added Successfully!'));
-		} else {
-			echo json_encode($arrayName = array('success' => false));
-		}
+		} 
 	}
 
 	public function assignExam() { 
 		$data = array(
-			'user_id' => $this->input->post('selected_examinee_id')
+			'user_id' => $this->input->post('selected_examinee_id'),
+			'exam_id' => $this->input->post('assigned_exam_id')
 		);
 
 		$assigned_user_exam = $this->DashboardModel->assign_user_exam('users', $data);

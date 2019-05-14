@@ -17,32 +17,30 @@
               </li>
               <li>
                 <div class="page-title-box">
-                  <h4 class="page-title"> Manage User Exams </h4>
+                  <h4 class="page-title"> Assigned Exams </h4>
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Navigation</a></li>
-                    <li class="breadcrumb-item active"> User Assigned Exams</li>
+                    <li class="breadcrumb-item active"> Take Exam</li>
                   </ol>
                 </div>
               </li>
             </ul>
           </nav>
         </div>
+        <input type="hidden" id="examinee_id" value="<?php echo $this->session->userdata('user_id')?>">
         <div class="content">
           <div class="container-fluid">
             <div class="row">
               <div class="col-md-12">
                 <div class="card-box table-responsive">
                   <hr>                             
-                  <h4 class="m-t-0 header-title">List of User Exams</h4>
-                  <table id="user_assigned_tbl" class="table table-bordered table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                  <h4 class="m-t-0 header-title">List of Assigned Exams</h4>
+                  <table id="user_assigned_exams_tbl" class="table table-bordered table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                       <tr>
-                        <th>Taken By</th>
                         <th>Exam Name</th>
                         <th>Exam Type</th>
-                        <th>Exam Taken</th>
-                        <th>Exam Result</th>
-                        <th>Prize</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                   </table>
@@ -60,6 +58,6 @@
     </div>
 
     <?php include 'layouts/scripts.php'; ?>
-    <script src="<?php echo asset_url()?>js/view-js/exam-js/manage-assigned-exams.js"></script>
+    <script src="<?php echo asset_url()?>js/view-js/examinee-js/examinee-exams.js"></script>
   </body>
 </html>

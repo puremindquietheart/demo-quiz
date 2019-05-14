@@ -45,12 +45,12 @@ $(function(){
                     '<button type="button" class="btn btn-primary waves-effect edit-exam waves-light" data-edit_exam_id='+data+'> <i class="mdi mdi-tooltip-edit m-r-5"></i> <span>Edit</span> </button>' : data;
                 }
             },
-            { data: 'eq_exam_id',
+            { data: 'eq_exam_id', data: 'exam_id',
                 render: function (data, type, row, meta) {
-                    if (data == null) {
+                    if (row.eq_exam_id == null) {
                         return '<button type="button" class="btn btn-info assign-exam" disabled> <i class="mdi mdi-file-send m-r-5"></i> <span>Assign To</span> </button>';
                     } else {
-                        return '<button type="button" class="btn btn-info assign-exam"> <i class="mdi mdi-file-send m-r-5"></i> <span>Assign To</span> </button>';
+                        return '<button type="button" class="btn btn-info assign-exam" data-exam_id='+row.exam_id+'> <i class="mdi mdi-file-send m-r-5"></i> <span>Assign To</span> </button>';
                     }
                    
                 }
@@ -95,9 +95,14 @@ $(function(){
 
             $(assign_user_exam).on('click', function(){
                 $('#assign_exam_modal').modal('show');
-
+                
                 $('#select_examinee').select2();
 
+                const get_exam_id = $(this).data('exam_id');
+
+                $('#assign_exam_id').val(get_exam_id);
+
+                console.log(get_exam_id);
                 $.ajax({
                     type: 'POST',
                     url: 'http://localhost/Quiz/index.php/Dashboard/Administrator/getExaminee',
@@ -105,13 +110,12 @@ $(function(){
                     success: (result) => {
                         $('#select_examinee').empty();
 
-                        // APPEND DEFAULT OPTION VALUE
                         $('#select_examinee').append('<option value="0" selected disabled readonly>Please Select Examinee</option>');
-                        // APPEND AJAX VALUE TO OPTION
+
                         $.each(result, function(i, v){
                             $('#select_examinee').append('<option value='+v.user_id+'>'+v.user_name+'</option>');
                         });
-                        // ON CHANGE PRODUCT TYPE
+
                         $('#select_examinee').on('change', function(){
                             $('#selected_examinee').val($('#select_examinee option:selected').val());
                         });
@@ -267,15 +271,42 @@ $(function(){
                 },
                 dataType: 'json',
                 success: (result) => {
-                    console.log(result);
+                    if (result.success == true) {
+                        $('#add_exam_question').modal('hide');
+                        swal({
+                            title: 'Success!',
+                            text: 'New question was created!',
+                            type: 'success'
+                        }).then(() => {
+                            $('#message_success').css('display', 'block');
+                            $('#success_text').text(result.message);
+
+                            setTimeout(() => {
+                                $('#message_success').fadeOut();
+                            }, 3500);
+
+                            exam_list_tbl.ajax.reload();
+                        });
+                        
+                    }
                 }
             });
         }
     });
 
+    $('#add_exam_question').on('hidden.bs.modal', () => {
+        $('#input_question').val('');
+        $('#input_answer_a').val('');
+        $('#input_answer_b').val('');
+        $('#input_answer_c').val('');
+        $('#input_answer_d').val('');
+        $('#correct_answer').val('');
+    });
+
     $('#assign_exam_btn').on('click', (e) => {
         e.preventDefault();
 
+        const assigned_exam_id = $('#assign_exam_id').val();
         const selected_examinee_id = $('#selected_examinee').val();
 
         if (selected_examinee_id == "" || selected_examinee_id == "0") {
@@ -290,7 +321,8 @@ $(function(){
                 url: 'http://localhost/Quiz/index.php/Dashboard/Administrator/assignExam',
                 data:
                 {
-                    selected_examinee_id:selected_examinee_id
+                    selected_examinee_id:selected_examinee_id,
+                    assigned_exam_id:assigned_exam_id
                 },
                 dataType: 'json',
                 success: (result) => {
@@ -381,6 +413,6 @@ $(function(){
     });
 
     setInterval(() => {
-        // exam_list_tbl.ajax.reload();
+        exam_list_tbl.ajax.reload();
     }, 10000);
 });

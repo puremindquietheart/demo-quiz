@@ -22,7 +22,7 @@ class Dashboard_Model extends CI_Model {
   
   public function count_exam_data($table) {
 
-    $this->db->select('COUNT(CASE WHEN is_passed = 1 THEN 1 END) as passed_examinees, COUNT(CASE WHEN is_passed = 0 THEN 1 END) as failed_examinees');
+    $this->db->select('COUNT(CASE WHEN is_passed = 1 THEN 1 END) as passed_examinees, COUNT(CASE WHEN is_passed = 2 THEN 1 END) as failed_examinees');
 
     $this->db->from($table);
 
@@ -335,19 +335,39 @@ class Dashboard_Model extends CI_Model {
     }
   }
 
-  public function assign_user_exam($table, $data) {
+  public function new_question($table, $data) {
+    // user logs
     $log_table = 'logs';
 
     $log_data = array(
       'user_id' => $this->session->userdata('user_id'),
-      'log_action' => 'Exam details was updated.',
+      'log_action' => 'New question was added.',
       'log_date' => Date("Y-m-d H:i:s")
     );
 
+    $this->db->insert($table, $data);
+    $this->db->insert($log_table, $log_data);
+
+    return true;
+  }
+
+  public function assign_user_exam($table, $data) {
+    $log_table = 'logs';
+
+    $log_data = array (
+      'user_id' => $this->session->userdata('user_id'),
+      'log_action' => 'Exam was assigned to user.',
+      'log_date' => Date("Y-m-d H:i:s")
+    );
+
+    // update user table
     $this->db->set('has_exam', '1');
     $this->db->where('user_id', $data['user_id']);
     $this->db->update($table);
+    // insert user log
     $this->db->insert($log_table, $log_data);
+    // insert assign exam with user details
+    $this->db->insert('user_exams', $data);
 
     return true;
   }

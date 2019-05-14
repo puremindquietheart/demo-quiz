@@ -45,7 +45,7 @@
             </li>
 
             <li>
-                <a href="javascript: void(0);">
+                <a href="<?php echo base_url()?>index.php/Dashboard/Examinee/take_exams">
                     <i class="fa fa-files-o"></i> <span> Pending Exams </span>
                 </a>
             </li>

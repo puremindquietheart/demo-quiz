@@ -8,7 +8,23 @@
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?php echo asset_url()?>images/shortlogo.png">
-
+    <!-- Sweet Alert css -->
+    <link href="<?php echo asset_url()?>plugins/sweet-alert/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <!-- Select 2 -->
+    <link href="<?php echo asset_url()?>plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <!-- Custom box css -->
+    <link href="<?php echo asset_url()?>plugins/custombox/css/custombox.min.css" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap Select JS-->
+    <link href="<?php echo asset_url()?>plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <!--Morris Chart CSS -->
+    <link rel="stylesheet" href="<?php echo asset_url()?>plugins/morris/morris.css">
+    <!-- DataTables -->
+    <link href="<?php echo asset_url()?>plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo asset_url()?>plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="<?php echo asset_url()?>plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Sweet Alert css -->
+    <link href="<?php echo asset_url()?>plugins/sweet-alert/sweetalert2.min.css" rel="stylesheet" type="text/css" />
     <!-- App css -->
     <link href="<?php echo asset_url()?>css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo asset_url()?>css/icons.css" rel="stylesheet" type="text/css" />

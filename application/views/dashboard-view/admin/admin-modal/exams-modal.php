@@ -85,7 +85,7 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<!-- Edit Exam -->
+<!-- Assign Exam -->
 <div id="assign_exam_modal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -99,6 +99,7 @@
                     <div class="form-group m-b-25">
                         <div class="col-12">
                             <label for="select_examinee"> Select Examinee </label>
+                            <input type="hidden" id="assign_exam_id">
                             <input type="hidden" id="selected_examinee">
                             <select class="form-control select2" id="select_examinee">
                             </select>
